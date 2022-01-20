@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyvalidate)
 library(tidyverse)
 library(broom)
 library(bslib)
@@ -119,6 +120,26 @@ server <- function(input, output) {
       )
     }
   })
+  
+  
+  iv <- InputValidator$new()
+  iv$add_rule("firstvector", sv_required())
+  iv$add_rule("secondvector", sv_required())
+  iv$add_rule(
+    "firstvector",
+    function(value) {
+      if(is.na(sum(as.numeric(unlist(str_split(value, pattern = ",")))))) {
+        "Input have to be numeric, separated by comma"
+      }
+  })
+  iv$add_rule(
+    "secondvector",
+    function(value) {
+      if(is.na(sum(as.numeric(unlist(str_split(value, pattern = ",")))))) {
+        "Input have to be numeric, separated by comma"
+      }
+    })
+  iv$enable()
   
   
   stat_test <- eventReactive(input$generate, {
