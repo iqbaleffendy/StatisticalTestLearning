@@ -61,7 +61,6 @@ ui <- fluidPage(
 )
 
 
-
 server <- function(input, output) {
   
   output$vector <- renderUI({
@@ -127,6 +126,7 @@ server <- function(input, output) {
     }
     
       test_result_tidy <- test_result %>% 
+        mutate(result = ifelse(p.value <= 0.05, "Statistically Significant, Reject H0", "Statistically Insignificant, Accept H0")) %>% 
         t() %>% 
         tibble(Parameter = rownames(.), Value = .[,1]) %>% 
         select(-1) %>% 
