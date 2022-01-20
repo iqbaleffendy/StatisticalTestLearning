@@ -7,18 +7,24 @@ library(DT)
 library(plotly)
 
 
-
 testnamedesctable <- read.csv("data/testnamedesc.csv")
 
+
+# User Interface----
 
 ui <- navbarPage(
   
   theme = bs_theme(
     version = 5,
+    bootswatch = "flatly",
+    primary = "#284F79", 
+    secondary = "#86919A",
+    success = "#86919A",
+    heading_font = "Rubik (Bold)",
     base_font = font_google("IBM Plex Sans"),
     code_font = font_google("JetBrains Mono")
   ),
-  title = "Statistical Test App",
+  title = "Statistical Test Learning App",
   tabPanel(
     title = "Home",
     sidebarLayout(
@@ -73,7 +79,7 @@ ui <- navbarPage(
   )
 )
 
-
+# Server----
 server <- function(input, output) {
   
   thematic::thematic_shiny()
