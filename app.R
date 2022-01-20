@@ -15,7 +15,8 @@ ui <- navbarPage(
   
   theme = bs_theme(
     version = 5,
-    base_font = font_google("Montserrat")
+    base_font = font_google("IBM Plex Sans"),
+    code_font = font_google("JetBrains Mono")
   ),
   title = "Statistical Test App",
   tabPanel(
