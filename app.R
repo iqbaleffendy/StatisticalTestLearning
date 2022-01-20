@@ -1,0 +1,114 @@
+library(shiny)
+library(tidyverse)
+library(broom)
+library(bslib)
+library(DT)
+
+
+ui <- fluidPage(
+  
+  theme = bs_theme(
+    version = 5,
+    base_font = font_google("Montserrat")
+  ),
+  
+  navbarPage(
+    title = "Statistical Test App",
+    tabPanel(
+      title = "Home",
+      sidebarLayout(
+        sidebarPanel(
+          width = 3,
+          selectInput(
+            inputId = "testname",
+            label = "Select a Statistical Test",
+            choices = c(
+              "One Sample t-Test", 
+              "Two Samples t-Test", 
+              "Wilcoxon Signed Rank Test", 
+              "Shapiro Test",
+              "Kolmogorov And Smirnov Test",
+              "Fisher’s F-Test",
+              "Chi Squared Test",
+              "Correlation Test"
+            ),
+            selected = "One Sample t-Test"
+          ),
+          textInput(
+            inputId = "firstvector",
+            label = "Type first vector"
+          ),
+          uiOutput("vector"),
+          actionButton(
+            inputId = "generate",
+            label = "Generate"
+          )
+        ),
+        mainPanel(
+          tableOutput("testresult"),
+          plotOutput("hist")
+        )
+      )
+    ),
+    tabPanel("About"),
+    tabPanel(
+      title = "Source Code",
+      pre(includeText("app.R"))
+    )
+  )
+  
+)
+
+
+
+server <- function(input, output) {
+  
+  output$vector <- renderUI({
+    onevector <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Shapiro Test")
+    
+    if(!input$testname %in% onevector){
+      textInput(
+        inputId = "secondvector",
+        label = "Type second vector"
+      )
+    }
+  })
+  
+  
+  stat_test <- eventReactive(input$generate, {
+    
+    firstvector <- as.numeric(unlist(str_split(input$firstvector, pattern = ",")))
+    
+    if(input$testname == "One Sample t-Test") {
+      test_result <- t.test(firstvector) %>% 
+        tidy() 
+    }
+    
+      test_result_tidy <- test_result %>% 
+        t() %>% 
+        tibble(Parameter = rownames(.), Value = .[,1]) %>% 
+        select(-1) %>% 
+        mutate(Parameter = str_to_title(Parameter))
+    
+    return(test_result_tidy)
+    
+  })
+  
+  output$testresult <- renderTable(stat_test())
+  
+  
+  hist_vector <- eventReactive(input$generate, {
+    
+    firstvector <- as.numeric(unlist(str_split(input$firstvector, pattern = ",")))
+    return(firstvector)
+    
+  })
+  
+  output$hist <- renderPlot({
+    hist(hist_vector())
+  })
+
+}
+
+
+shinyApp(ui = ui, server = server)
