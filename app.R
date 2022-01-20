@@ -113,6 +113,17 @@ server <- function(input, output) {
     } else if (input$testname == "Two Samples t-Test") {
       test_result <- t.test(x = firstvector, y = secondvector, mu = input$mu, conf.level = conf.level) %>% 
         tidy()
+    } else if (input$testname == "Wilcoxon Signed Rank Test") {
+      test_result <- wilcox.test(firstvector, mu = input$mu, conf.level = conf.level) %>% 
+        tidy()
+    } else if (input$testname == "Shapiro Test") {
+      test_result <- shapiro.test(firstvector) %>% tidy()
+    } else if (input$testname == "Kolmogorov And Smirnov Test") {
+      test_result <- ks.test(x = firstvector, y = secondvector) %>% tidy()
+    } else if (input$testname == "Fisher’s F-Test") {
+      test_result <- var.test(x = firstvector, y = secondvector) %>% tidy()
+    } else if (input$testname == "Correlation Test") {
+      test_result <- cor.test(x = firstvector, y = secondvector) %>% tidy()
     }
     
       test_result_tidy <- test_result %>% 
