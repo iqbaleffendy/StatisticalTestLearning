@@ -1,0 +1,7 @@
+testname,description
+One Sample t-Test,It is a parametric test used to test if the mean of a sample from a normal distribution could reasonably be a specific value.
+Two Samples t-Test,The two-sample t-test (also known as the independent samples t-test) is a method used to test whether the unknown population means of two groups are equal or not.
+Wilcoxon Signed Rank Test,"To test the mean of a sample when normal distribution is not assumed. Wilcoxon signed rank test can be an alternative to t-Test, especially when the data sample is not assumed to follow a normal distribution. It is a non-parametric method used to test if an estimate is different from its true value."
+Shapiro Test,To test if a sample follows a normal distribution.
+Kolmogorov And Smirnov Test,Kolmogorov-Smirnov test is used to check whether 2 samples follow the same distribution.
+Fisher’s F-Test,Fisher’s F test can be used to check if two samples have same variance.

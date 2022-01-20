@@ -7,6 +7,10 @@ library(DT)
 library(plotly)
 
 
+
+testnamedesctable <- read.csv("data/testnamedesc.csv")
+
+
 ui <- fluidPage(
   
   theme = bs_theme(
@@ -30,14 +34,13 @@ ui <- fluidPage(
               "Wilcoxon Signed Rank Test", 
               "Shapiro Test",
               "Kolmogorov And Smirnov Test",
-              "Fisher’s F-Test",
-              "Correlation Test"
+              "Fisher’s F-Test"
             ),
             selected = "One Sample t-Test"
           ),
           textInput(
             inputId = "firstvector",
-            label = "Type first vector"
+            label = "Type First Vector"
           ),
           uiOutput("vector"),
           uiOutput("samplemean"),
@@ -49,12 +52,18 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
-            column(width = 5, h4(textOutput("testresulttitle")), align = "center"),
-            column(width = 7, h4(textOutput("histogramtitle")), align = "center")
+            column(width = 6, h4(textOutput("testresulttitle")), align = "center"),
+            column(width = 6, h4(textOutput("histogramtitle")), align = "center")
           ),
           fluidRow(
-            column(width = 5, DTOutput("testresult"), align = "center"),
-            column(width = 7, plotlyOutput("hist", width = "100%"), align = "center")
+            column(width = 6, DTOutput("testresult"), align = "center"),
+            column(width = 6, plotlyOutput("hist", width = "100%"), align = "center")
+          ),
+          fluidRow(br()),
+          fluidRow(br()),
+          fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
+          fluidRow(
+            verbatimTextOutput("testnamedesc")
           )
         )
       )
@@ -78,7 +87,7 @@ server <- function(input, output) {
     if(!input$testname %in% onevector){
       textInput(
         inputId = "secondvector",
-        label = "Type second vector"
+        label = "Type Second Vector"
       )
     }
   })
@@ -130,9 +139,7 @@ server <- function(input, output) {
       test_result <- ks.test(x = firstvector, y = secondvector) %>% tidy()
     } else if (input$testname == "Fisher’s F-Test") {
       test_result <- var.test(x = firstvector, y = secondvector) %>% tidy()
-    } else if (input$testname == "Correlation Test") {
-      test_result <- cor.test(x = firstvector, y = secondvector) %>% tidy()
-    }
+    } 
     
       test_result_tidy <- test_result %>% 
         mutate(result = ifelse(p.value <= 0.05, "Statistically Significant, Reject H0", "Statistically Insignificant, Accept H0")) %>% 
@@ -188,6 +195,24 @@ server <- function(input, output) {
   
   output$histogramtitle <- renderText({
     paste(histogramtitle())
+  })
+  
+  testdescription <- eventReactive(input$generate, {
+    "Test Description"
+  })
+  
+  output$descriptiontitle <- renderText({
+    paste(testdescription())
+  })
+  
+  testnamedesc <- eventReactive(input$generate, {
+    testnamedesc <- testnamedesctable %>% 
+      dplyr::filter(testname == input$testname) %>% 
+      dplyr::select(description)
+  })
+  
+  output$testnamedesc <- renderText({
+    paste(testnamedesc())
   })
   
 }
