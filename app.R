@@ -11,69 +11,65 @@ library(plotly)
 testnamedesctable <- read.csv("data/testnamedesc.csv")
 
 
-ui <- fluidPage(
+ui <- navbarPage(
   
   theme = bs_theme(
     version = 5,
     base_font = font_google("Montserrat")
   ),
-  
-  navbarPage(
-    title = "Statistical Test App",
-    tabPanel(
-      title = "Home",
-      sidebarLayout(
-        sidebarPanel(
-          width = 3,
-          selectInput(
-            inputId = "testname",
-            label = "Select a Statistical Test",
-            choices = c(
-              "One Sample t-Test", 
-              "Two Samples t-Test", 
-              "Wilcoxon Signed Rank Test", 
-              "Shapiro Test",
-              "Kolmogorov And Smirnov Test",
-              "Fisher’s F-Test"
-            ),
-            selected = "One Sample t-Test"
+  title = "Statistical Test App",
+  tabPanel(
+    title = "Home",
+    sidebarLayout(
+      sidebarPanel(
+        width = 3,
+        selectInput(
+          inputId = "testname",
+          label = "Select a Statistical Test",
+          choices = c(
+            "One Sample t-Test", 
+            "Two Samples t-Test", 
+            "Wilcoxon Signed Rank Test", 
+            "Shapiro Test",
+            "Kolmogorov And Smirnov Test",
+            "Fisher’s F-Test"
           ),
-          textInput(
-            inputId = "firstvector",
-            label = "Type First Vector"
-          ),
-          uiOutput("vector"),
-          uiOutput("samplemean"),
-          uiOutput("confidencelevel"),
-          actionButton(
-            inputId = "generate",
-            label = "Generate"
-          )
+          selected = "One Sample t-Test"
         ),
-        mainPanel(
-          fluidRow(
-            column(width = 6, h4(textOutput("testresulttitle")), align = "center"),
-            column(width = 6, h4(textOutput("histogramtitle")), align = "center")
-          ),
-          fluidRow(
-            column(width = 6, DTOutput("testresult"), align = "center"),
-            column(width = 6, plotlyOutput("hist", width = "100%"), align = "center")
-          ),
-          fluidRow(br()),
-          fluidRow(br()),
-          fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
-          fluidRow(
-            verbatimTextOutput("testnamedesc")
-          )
+        textInput(
+          inputId = "firstvector",
+          label = "Type First Vector"
+        ),
+        uiOutput("vector"),
+        uiOutput("samplemean"),
+        uiOutput("confidencelevel"),
+        actionButton(
+          inputId = "generate",
+          label = "Generate"
+        )
+      ),
+      mainPanel(
+        fluidRow(
+          column(width = 6, h4(textOutput("testresulttitle")), align = "center"),
+          column(width = 6, h4(textOutput("histogramtitle")), align = "center")
+        ),
+        fluidRow(
+          column(width = 6, DTOutput("testresult"), align = "center"),
+          column(width = 6, plotlyOutput("hist", width = "100%"), align = "center")
+        ),
+        fluidRow(br()),
+        fluidRow(br()),
+        fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
+        fluidRow(
+          verbatimTextOutput("testnamedesc")
         )
       )
-    ),
-    tabPanel(
-      title = "Source Code",
-      pre(includeText("app.R"))
     )
+  ),
+  tabPanel(
+    title = "Source Code",
+    pre(includeText("app.R"))
   )
-  
 )
 
 
