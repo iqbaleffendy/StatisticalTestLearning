@@ -49,7 +49,7 @@ ui <- fluidPage(
         mainPanel(
           fluidRow(
             column(width = 5, DTOutput("testresult")),
-            column(width = 4, plotlyOutput("hist", width = "100%"))
+            column(width = 7, plotlyOutput("hist", width = "100%"))
           )
         )
       )
