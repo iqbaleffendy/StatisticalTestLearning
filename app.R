@@ -20,7 +20,6 @@ ui <- navbarPage(
     primary = "#284F79", 
     secondary = "#86919A",
     success = "#86919A",
-    heading_font = "Rubik (Bold)",
     base_font = font_google("IBM Plex Sans"),
     code_font = font_google("JetBrains Mono")
   ),
