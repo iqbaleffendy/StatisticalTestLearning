@@ -3,6 +3,7 @@ library(tidyverse)
 library(broom)
 library(bslib)
 library(DT)
+library(plotly)
 
 
 ui <- fluidPage(
@@ -46,12 +47,13 @@ ui <- fluidPage(
           )
         ),
         mainPanel(
-          tableOutput("testresult"),
-          plotOutput("hist")
+          fluidRow(
+            column(width = 5, DTOutput("testresult")),
+            column(width = 4, plotlyOutput("hist", width = "100%"))
+          )
         )
       )
     ),
-    tabPanel("About"),
     tabPanel(
       title = "Source Code",
       pre(includeText("app.R"))
@@ -136,18 +138,33 @@ server <- function(input, output) {
     
   })
   
-  output$testresult <- renderTable(stat_test())
+  output$testresult <- renderDT({
+    datatable(
+      stat_test(), 
+      options = list(
+        dom = 't',
+        columnDefs = list(
+          list(
+            className = "dt-center",
+            targets = "_all"
+          )
+        )
+      )
+    )
+  })
   
   
   hist_vector <- eventReactive(input$generate, {
     
-    firstvector <- as.numeric(unlist(str_split(input$firstvector, pattern = ",")))
+    firstvector <- density(as.numeric(unlist(str_split(input$firstvector, pattern = ","))))
     return(firstvector)
     
   })
   
-  output$hist <- renderPlot({
-    hist(hist_vector())
+  output$hist <- renderPlotly({
+    hist_vector <- hist_vector()
+    plot_ly(x = ~hist_vector$x, y = ~hist_vector$y, type = "scatter", mode = "lines", fill = "tozeroy") %>%  
+      layout(xaxis = list(title = "Vector"), yaxis = list(title = "Density"))
   })
 
 }
