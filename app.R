@@ -29,7 +29,6 @@ ui <- fluidPage(
               "Shapiro Test",
               "Kolmogorov And Smirnov Test",
               "Fisher’s F-Test",
-              "Chi Squared Test",
               "Correlation Test"
             ),
             selected = "One Sample t-Test"
@@ -39,6 +38,8 @@ ui <- fluidPage(
             label = "Type first vector"
           ),
           uiOutput("vector"),
+          uiOutput("samplemean"),
+          uiOutput("confidencelevel"),
           actionButton(
             inputId = "generate",
             label = "Generate"
@@ -70,6 +71,31 @@ server <- function(input, output) {
       textInput(
         inputId = "secondvector",
         label = "Type second vector"
+      )
+    }
+  })
+  
+  output$samplemean <- renderUI({
+    samplemean <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Two Samples t-Test")
+    
+    if(input$testname %in% samplemean){
+      numericInput(
+        inputId = "mu",
+        label = "Input Sample Mean",
+        value = 0
+      )
+    }
+  })
+  
+  output$confidencelevel <- renderUI({
+    confidencelevel <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Two Samples t-Test")
+    
+    if(input$testname %in% confidencelevel){
+      selectInput(
+        inputId = "conf.level",
+        label = "Select Confidence Level",
+        choices = list("90%" = 0.90, "95%" = 0.95, "99%" = 0.99),
+        selected = 0.90
       )
     }
   })
