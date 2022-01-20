@@ -64,7 +64,6 @@ ui <- navbarPage(
           column(width = 6, plotlyOutput("hist", width = "100%"), align = "center")
         ),
         fluidRow(br()),
-        fluidRow(br()),
         fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
         fluidRow(
           verbatimTextOutput("testnamedesc")
