@@ -104,10 +104,15 @@ server <- function(input, output) {
   stat_test <- eventReactive(input$generate, {
     
     firstvector <- as.numeric(unlist(str_split(input$firstvector, pattern = ",")))
+    secondvector <- as.numeric(unlist(str_split(input$secondvector, pattern = ",")))
+    conf.level <- as.numeric(input$conf.level)
     
     if(input$testname == "One Sample t-Test") {
-      test_result <- t.test(firstvector) %>% 
+      test_result <- t.test(firstvector, mu = input$mu, conf.level = conf.level) %>% 
         tidy() 
+    } else if (input$testname == "Two Samples t-Test") {
+      test_result <- t.test(x = firstvector, y = secondvector, mu = input$mu, conf.level = conf.level) %>% 
+        tidy()
     }
     
       test_result_tidy <- test_result %>% 
