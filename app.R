@@ -2,6 +2,7 @@ library(shiny)
 library(tidyverse)
 library(broom)
 library(bslib)
+library(thematic)
 library(DT)
 library(plotly)
 
@@ -48,8 +49,12 @@ ui <- fluidPage(
         ),
         mainPanel(
           fluidRow(
-            column(width = 5, DTOutput("testresult")),
-            column(width = 7, plotlyOutput("hist", width = "100%"))
+            column(width = 5, h4(textOutput("testresulttitle")), align = "center"),
+            column(width = 7, h4(textOutput("histogramtitle")), align = "center")
+          ),
+          fluidRow(
+            column(width = 5, DTOutput("testresult"), align = "center"),
+            column(width = 7, plotlyOutput("hist", width = "100%"), align = "center")
           )
         )
       )
@@ -64,6 +69,8 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
+  
+  thematic::thematic_shiny()
   
   output$vector <- renderUI({
     onevector <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Shapiro Test")
@@ -167,6 +174,22 @@ server <- function(input, output) {
       layout(xaxis = list(title = "Vector"), yaxis = list(title = "Density"))
   })
 
+  testresulttitle <- eventReactive(input$generate, {
+    "Test Result"
+  })
+  
+  histogramtitle <- eventReactive(input$generate, {
+    "Histogram Plot"
+  })
+  
+  output$testresulttitle <- renderText({
+    paste(testresulttitle())
+  })
+  
+  output$histogramtitle <- renderText({
+    paste(histogramtitle())
+  })
+  
 }
 
 
