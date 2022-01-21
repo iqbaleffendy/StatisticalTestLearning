@@ -24,6 +24,7 @@ ui <- navbarPage(
     base_font = font_google("IBM Plex Sans"),
     code_font = font_google("JetBrains Mono")
   ),
+  tags$style(type='text/css', '#testnamedesc {white-space: pre-wrap;}'),
   title = "Statistical Test Learning App",
   tabPanel(
     title = "Home",
