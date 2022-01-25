@@ -68,12 +68,18 @@ ui <- navbarPage(
       ),
       mainPanel(
         fluidRow(
-          column(width = 6, h4(textOutput("testresulttitle")), align = "center"),
-          column(width = 6, h4(textOutput("histogramtitle")), align = "center")
-        ),
-        fluidRow(
-          column(width = 6, DTOutput("testresult"), align = "center"),
-          column(width = 6, plotlyOutput("hist", width = "100%"), align = "center")
+          column(
+            width = 6, 
+            h4(textOutput("testresulttitle")), 
+            DTOutput("testresult"), 
+            align = "center"
+          ),
+          column(
+            width = 6, 
+            h4(textOutput("histogramtitle")), 
+            plotlyOutput("hist", width = "100%"), 
+            align = "center"
+          )
         ),
         fluidRow(br()),
         fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
