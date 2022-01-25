@@ -49,11 +49,17 @@ ui <- navbarPage(
           label = "Type First Vector"
         ),
         uiOutput("vector"),
+        actionButton(
+          inputId = "randomnum",
+          label = "Generate Random Vector"
+        ),
+        br(),
+        br(),
         uiOutput("samplemean"),
         uiOutput("confidencelevel"),
         actionButton(
           inputId = "generate",
-          label = "Generate"
+          label = "Calculate"
         )
       ),
       mainPanel(
@@ -80,11 +86,19 @@ ui <- navbarPage(
 )
 
 # Server----
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   #bslib::bs_themer()
   
   thematic::thematic_shiny()
+  
+  randomnumx <- eventReactive(input$randomnum, {
+    randomnum <- rnorm(n = 20)
+  })
+  
+  randomnumy <- eventReactive(input$randomnum, {
+    randomnum <- rnorm(n = 20)
+  })
   
   output$vector <- renderUI({
     onevector <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Shapiro Test")
@@ -120,6 +134,14 @@ server <- function(input, output) {
         selected = 0.90
       )
     }
+  })
+  
+  observe({
+    updateTextInput(session, "firstvector", value = paste(randomnumx(), collapse = ", "))
+  })
+  
+  observe({
+    updateTextInput(session, "secondvector", value = paste(randomnumy(), collapse = ", "))
   })
   
   
