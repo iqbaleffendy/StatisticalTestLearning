@@ -205,7 +205,8 @@ server <- function(input, output, session) {
   
   output$testresult <- renderDT({
     datatable(
-      stat_test(), 
+      stat_test(),
+      rownames = FALSE,
       options = list(
         dom = 't',
         columnDefs = list(
