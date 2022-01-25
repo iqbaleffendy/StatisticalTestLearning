@@ -72,20 +72,20 @@ ui <- navbarPage(
           column(
             width = 6, 
             h4(textOutput("testresulttitle")), 
-            withSpinner(DTOutput("testresult")), 
+            withSpinner(DTOutput("testresult"), type = 7), 
             align = "center"
           ),
           column(
             width = 6, 
             h4(textOutput("histogramtitle")), 
-            withSpinner(plotlyOutput("hist", width = "100%")), 
+            withSpinner(plotlyOutput("hist", width = "100%"), type = 7), 
             align = "center"
           )
         ),
         fluidRow(br()),
         fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
         fluidRow(
-          withSpinner(verbatimTextOutput("testnamedesc"))
+          withSpinner(verbatimTextOutput("testnamedesc"), type = 7)
         )
       )
     )
