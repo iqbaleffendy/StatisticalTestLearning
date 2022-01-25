@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyvalidate)
+library(shinycssloaders)
 library(tidyverse)
 library(broom)
 library(bslib)
@@ -71,20 +72,20 @@ ui <- navbarPage(
           column(
             width = 6, 
             h4(textOutput("testresulttitle")), 
-            DTOutput("testresult"), 
+            withSpinner(DTOutput("testresult")), 
             align = "center"
           ),
           column(
             width = 6, 
             h4(textOutput("histogramtitle")), 
-            plotlyOutput("hist", width = "100%"), 
+            withSpinner(plotlyOutput("hist", width = "100%")), 
             align = "center"
           )
         ),
         fluidRow(br()),
         fluidRow(h4(textOutput("descriptiontitle")), align = "center"),
         fluidRow(
-          verbatimTextOutput("testnamedesc")
+          withSpinner(verbatimTextOutput("testnamedesc"))
         )
       )
     )
