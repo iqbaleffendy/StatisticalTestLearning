@@ -49,17 +49,21 @@ ui <- navbarPage(
           label = "Type First Vector"
         ),
         uiOutput("vector"),
-        actionButton(
-          inputId = "randomnum",
-          label = "Generate Random Vector"
+        h5(
+          actionButton(
+            inputId = "randomnum",
+            label = "Generate Random Vector"
+          ),
+          align = "center"
         ),
-        br(),
-        br(),
         uiOutput("samplemean"),
         uiOutput("confidencelevel"),
-        actionButton(
-          inputId = "generate",
-          label = "Calculate"
+        h5(
+          actionButton(
+            inputId = "generate",
+            label = "Calculate"
+          ),
+          align = "center"
         )
       ),
       mainPanel(
