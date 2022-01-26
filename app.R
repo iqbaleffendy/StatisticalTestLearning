@@ -93,7 +93,8 @@ ui <- navbarPage(
   tabPanel(
     title = "Source Code",
     pre(includeText("app.R"))
-  )
+  ),
+  nav_item(a(href = "https://github.com/iqbaleffendy/StatisticalTestLearning", "Github Repository"))
 )
 
 # Server----
