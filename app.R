@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(shinyvalidate)
 library(shinycssloaders)
 library(tidyverse)
@@ -15,6 +16,8 @@ testnamedesctable <- read.csv("data/testnamedesc.csv")
 # User Interface----
 
 ui <- navbarPage(
+  
+  shinyjs::useShinyjs(),
   
   theme = bs_theme(
     version = 5,
@@ -176,6 +179,18 @@ server <- function(input, output, session) {
     })
   iv$enable()
   
+  observe({
+    onevector <- c("One Sample t-Test", "Wilcoxon Signed Rank Test", "Shapiro Test")
+    if (input$testname %in% onevector) {
+      shinyjs::toggleState("generate", !is.null(input$firstvector) && input$firstvector != "")
+    } else {
+      shinyjs::toggleState(
+        "generate", 
+        !is.null(input$firstvector) && input$firstvector != ""
+        && !is.null(input$secondvector) && input$secondvector != ""
+      )
+    }
+  })
   
   stat_test <- eventReactive(input$generate, {
     
